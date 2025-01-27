@@ -1,0 +1,24 @@
+[
+    {
+        "id": 1,
+        "title": "Camiseta",
+        "description": "Camiseta de algodón 100% de alta calidad.",
+        "code": "C001",
+        "price": 20.99,
+        "status": true,
+        "stock": 50,
+        "category": "Ropa",
+        "thumbnails": []
+    },
+    {
+        "id": 2,
+        "title": "Zapatillas",
+        "description": "Zapatillas deportivas para correr.",
+        "code": "Z001",
+        "price": 55.49,
+        "status": true,
+        "stock": 30,
+        "category": "Calzado",
+        "thumbnails": []
+    }
+]
