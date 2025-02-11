@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const router = express.Router();
 
-const productsFilePath = path.join(__dirname, '../../productos.json');
+const productsFilePath = path.join(__dirname, '../data/productos.json');
 
 const readProductsFile = () => {
     try {
@@ -63,6 +63,9 @@ router.post('/', (req, res) => {
     products.push(newProduct);
     writeProductsFile(products);
     res.status(201).json(newProduct);
+
+    // Emitir evento de Socket.io
+    req.app.get('io').emit('updateProducts', products);
 });
 
 // Ruta para actualizar un producto por su ID
@@ -81,6 +84,9 @@ router.put('/:pid', (req, res) => {
 
     writeProductsFile(products);
     res.json(updatedProduct);
+
+    // Emitir evento de Socket.io
+    req.app.get('io').emit('updateProducts', products);
 });
 
 // Ruta para eliminar un producto por su ID
@@ -95,6 +101,9 @@ router.delete('/:pid', (req, res) => {
 
     writeProductsFile(updatedProducts);
     res.status(204).send();
+
+    // Emitir evento de Socket.io
+    req.app.get('io').emit('updateProducts', updatedProducts);
 });
 
 module.exports = router;

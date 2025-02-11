@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real Time Products</title>
+</head>
+<body>
+    <h1>Lista de Productos en Tiempo Real</h1>
+    <ul id="productsList">
+        {{#each products}}
+            <li>{{this.title}} - {{this.price}}</li>
+        {{/each}}
+    </ul>
+
+    <h2>Agregar Producto</h2>
+    <form id="addProductForm">
+        <input type="text" id="title" placeholder="Título" required>
+        <input type="text" id="description" placeholder="Descripción" required>
+        <input type="text" id="code" placeholder="Código" required>
+        <input type="number" id="price" placeholder="Precio" required>
+        <input type="number" id="stock" placeholder="Stock" required>
+        <input type="text" id="category" placeholder="Categoría" required>
+        <button type="submit">Agregar</button>
+    </form>
+
+    <h2>Eliminar Producto</h2>
+    <form id="deleteProductForm">
+        <input type="number" id="productId" placeholder="ID del Producto" required>
+        <button type="submit">Eliminar</button>
+    </form>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        const productsList = document.getElementById('productsList');
+        const addProductForm = document.getElementById('addProductForm');
+        const deleteProductForm = document.getElementById('deleteProductForm');
+
+        socket.on('updateProducts', (products) => {
+            productsList.innerHTML = '';
+            products.forEach(product => {
+                const li = document.createElement('li');
+                li.textContent = `${product.title} - ${product.price}`;
+                productsList.appendChild(li);
+            });
+        });
+
+        addProductForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const newProduct = {
+                title: document.getElementById('title').value,
+                description: document.getElementById('description').value,
+                code: document.getElementById('code').value,
+                price: parseFloat(document.getElementById('price').value),
+                stock: parseInt(document.getElementById('stock').value),
+                category: document.getElementById('category').value,
+                status: true
+            };
+            socket.emit('newProduct', newProduct);
+            addProductForm.reset();
+        });
+
+        deleteProductForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const productId = parseInt(document.getElementById('productId').value);
+            socket.emit('deleteProduct', productId);
+            deleteProductForm.reset();
+        });
+    </script>
+</body>
+</html>
