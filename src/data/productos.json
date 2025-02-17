@@ -1,8 +1,8 @@
 [
     {
         "id": 1,
-        "title": "Camiseta",
-        "description": "Camiseta de algodón 100% de alta calidad.",
+        "title": "Remera",
+        "description": "Remera de algodón 100% de alta calidad.",
         "code": "C001",
         "price": 20.99,
         "status": true,
